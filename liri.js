@@ -1,5 +1,8 @@
 require("dotenv").config();
+
+//require node packages
 var twitter = require('twitter');
+var Spotify = require('node-spotify-api');
 
 
 
@@ -24,6 +27,18 @@ if (command === "my-tweets") {
 if (command === "spotify-this-song") {
   var song = inputString[3];
   //.search
+  //search: function({ type: 'artist OR album OR track', query: 'My search query', limit: 20 }, callback);
+  //Example:
+	  // var spotify = new Spotify({
+	  // id: <your spotify client id>,
+	  // secret: <your spotify client secret>
+	// });
+	//spotify.search({ type: 'track', query: 'All the Small Things' }, function(err, data) {
+  		//if (err) {
+    		//return console.log('Error occurred: ' + err);
+  		//}
+ 	//console.log(data); 
+	//});
 }
 
 //OMDB
