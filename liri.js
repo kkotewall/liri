@@ -45,15 +45,22 @@ switch (command) {
 
 
 //twitter
+//https://developer.twitter.com/en/docs/tweets/timelines/api-reference/get-statuses-user_timeline
 function twitterAPI {
-  var tweet = inputString[3];
-  //requests:
-  //https://developer.twitter.com/en/docs/tweets/search/api-reference/get-search-tweets
-  //parameter required: q; utf-8 url-encoded search query of 500 characters max (ex: @noradio)
-  //parameter optional: count; # of tweets returned per page
-  //client.get(path, params, callback);
-  //example API call: GET https://api.twitter.com/1.1/search/tweets.json?q=%23freebandnames&count=4
-}
+	//access hidden api keys
+	var client = new Twitter({
+		consumer_key: process.env.TWITTER_CONSUMER_KEY,
+		consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+		access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
+		access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
+	});
+	//only retrieving "text" from the tweets? output parameters
+	client.get("https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=kodewall&count=20", function(error, response, text) {
+		if (!error && response.statusCode === 200) {
+			console.log("The requested tweets are: " + JSON.parse(text));
+	//prettify results...
+  }});
+
 
 //spotify
 function spotifyAPI {
