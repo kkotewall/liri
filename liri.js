@@ -1,10 +1,10 @@
+//require module for storing config 
 require("dotenv").config();
 
-//require node packages
+//require node packages for api calls
 var twitter = require('twitter');
 var Spotify = require('node-spotify-api');
 var request = require('request');
-
 
 //capture command line arguments
 var inputString = process.argv;
@@ -12,8 +12,23 @@ var inputString = process.argv;
 //first string will be command type
 var command = inputString[2];
 
-//twitter
+//arg[2] corresponding function call
 if (command === "my-tweets") {
+	twitterAPI();
+}
+	else if (command === "spotify-this-song") {
+		spotifyAPI();
+	}
+	else if (command === "movie-this") {
+		omdbapi();
+	}
+	else if (command === "do-what-it-says") {
+		executeFile();
+	}
+
+
+//twitter
+function twitterAPI {
   var tweet = inputString[3];
   //requests:
   //https://developer.twitter.com/en/docs/tweets/search/api-reference/get-search-tweets
@@ -24,7 +39,7 @@ if (command === "my-tweets") {
 }
 
 //spotify
-if (command === "spotify-this-song") {
+function spotifyAPI {
   var song = inputString[3];
   //.search
   //search: function({ type: 'artist OR album OR track', query: 'My search query', limit: 20 }, callback);
@@ -43,10 +58,9 @@ if (command === "spotify-this-song") {
 
 //OMDB
 // Include the request npm package (Don't forget to run "npm install request" in this folder first!)
-var request = require("request");
-if (command === "movie-this") {
+function omdbAPI {
   var movie = inputString[3];
-  request("http://www.omdbapi.com/?t= + movie + &y=&plot=short&apikey=trilogy", function(error, response, body) {
+  request("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy", function(error, response, body) {
   	if (!error && response.statusCode === 200) {
     console.log("The movie's rating is: " + JSON.parse(body).imdbRating);
 
@@ -59,10 +73,23 @@ if (command === "movie-this") {
 	  // console.log('body:', body); // Print the HTML for the Google homepage.
 	// });
 
+//OMDB search parameter:
+	//s: search movie title
+//OMDB result parameters:
+	// t: title of movie
+	//y: year of release
+	//.imdbRating: IMDB Rating of the movie.
+	//Rotten Tomatoes Rating of the movie.
+	//Country where the movie was produced.
+	//Language of the movie.
+	//plot: Plot of the movie.
+	//Actors in the movie.
+
+
 
 
 //read text file
-if (command === "do-what-it-says") {
+function executeFile {
   var song = inputString[3];
 }
 //fs.readFile
