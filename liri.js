@@ -1,10 +1,12 @@
 //require module for storing config 
 require("dotenv").config();
 
-//require node packages for api calls
+//require node package variables
 var twitter = require('twitter');
 var Spotify = require('node-spotify-api');
 var request = require('request');
+var fs = require("fs");
+
 
 //capture command line arguments
 var inputString = process.argv;
@@ -12,6 +14,8 @@ var inputString = process.argv;
 //first string will be command type
 var command = inputString[2];
 
+
+///////////////////////  sort input[2]  /////////////////////////////////////////////////
 //previous if-then to call corresponding function
 // if (command === "my-tweets") {
 // 	twitterAPI();
@@ -43,7 +47,7 @@ switch (command) {
 		break;
 }
 
-
+///////////////////////////////////  function call  //////////////////////////////////////////////////
 //twitter
 //https://developer.twitter.com/en/docs/tweets/timelines/api-reference/get-statuses-user_timeline
 function twitterAPI {
@@ -64,7 +68,12 @@ function twitterAPI {
 
 //spotify
 function spotifyAPI {
-  var song = inputString[3];
+  if (defaultSong !=== "null") {
+
+  }
+  	else if (var song = inputString[3]) {
+
+  	}
   //.search
   //search: function({ type: 'artist OR album OR track', query: 'My search query', limit: 20 }, callback);
   //Example:
@@ -114,9 +123,19 @@ function omdbAPI {
 
 //read text file
 function executeFile {
-  var song = inputString[3];
+  	fs.readFile("random.txt", "utf8", function(error, data) {
+		if (error) {
+		    return console.log(error);
+		  }
+		//text file array and capture song
+		console.log(data);
+		var fileSong = data.split(",");
+		var defaultSong = inputString[1];
+		spotifyAPI();
+	}
 }
-//fs.readFile
+
+
 
 
 //**use Modularization for BONUS
