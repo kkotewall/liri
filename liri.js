@@ -12,19 +12,36 @@ var inputString = process.argv;
 //first string will be command type
 var command = inputString[2];
 
-//arg[2] corresponding function call
-if (command === "my-tweets") {
-	twitterAPI();
-}
-	else if (command === "spotify-this-song") {
+//previous if-then to call corresponding function
+// if (command === "my-tweets") {
+// 	twitterAPI();
+// }
+// 	else if (command === "spotify-this-song") {
+// 		spotifyAPI();
+// 	}
+// 	else if (command === "movie-this") {
+// 		omdbapi();
+// 	}
+// 	else if (command === "do-what-it-says") {
+// 		executeFile();
+// 	}
+
+
+//direct corresponding function
+switch (command) {
+	case "my-tweets":
+		twitterAPI();
+		break;
+	case "spotify-this-song":
 		spotifyAPI();
-	}
-	else if (command === "movie-this") {
-		omdbapi();
-	}
-	else if (command === "do-what-it-says") {
+		break;
+	case "movie-this":
+		omdbAPI();
+		break;
+	case "do-what-it-says":
 		executeFile();
-	}
+		break;
+}
 
 
 //twitter
