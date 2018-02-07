@@ -67,41 +67,38 @@ function twitterAPI {
 		if (!error && response.statusCode === 200) {
 			console.log("The requested tweets are: " + JSON.parse(text));
 	//prettify results...
-  }});
+		}
+	});
+}
 
 
 //spotify
 function spotifyAPI {
+	//default spotify search
+	if (!inputString[3]) {
+		var query = "The Sign Ace of Base"
+	}
+	//keyword search input[3]
+	else if {
+		var query = inputString[3]
+	}
+
 	//access hidden api keys
 	var spotify = new Spotify({
 		id: process.env.SPOTIFY_ID,
 		secret: process.env.SPOTIFY_SECRET
 	});
-  if (song === !) {
-  	var song = "The Sign" 
-  	var artist = "Ace of Base"
-  	  }
-  	else if () {
-  		var song = inputString[3]
-  	}
-  .search
-  q=name:abacab&type=album
-  search: function({ type: 'artist OR album OR track', query: 'My search query', limit: 20 }, callback);
-  Example:
-	  var spotify = new Spotify({
-	  id: <your spotify client id>,
-	  secret: <your spotify client secret>
-	});
-	spotify.search({ type: 'track', query: 'All the Small Things' }, function(err, data) {
-  		if (err) {
-    		return console.log('Error occurred: ' + err);
-  		}
- 	console.log(data); 
+	//results
+	spotify.request("https://api.spotify.com/v1/search/" + query, function(err, data) {
+		if (err) {
+		    return console.log('Error occurred: ' + err);
+		}
+	console.log(data); 
 	});
 }
 
+
 //OMDB
-// Include the request npm package (Don't forget to run "npm install request" in this folder first!)
 function omdbAPI {
   var movie = inputString[3];
   request("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy", function(error, response, body) {
@@ -130,8 +127,6 @@ function omdbAPI {
 	//Actors in the movie.
 
 
-
-
 //read text file
 function executeFile {
   	fs.readFile("random.txt", "utf8", function(error, data) {
@@ -141,7 +136,7 @@ function executeFile {
 		//text file array and capture song
 		console.log(data);
 		var fileSong = data.split(",");
-		var song = inputString[1];
+		var query = inputString[1];
 		console.log(inputString[1])
 		spotifyAPI();
 	}
