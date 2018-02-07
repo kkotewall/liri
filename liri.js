@@ -15,20 +15,21 @@ var inputString = process.argv;
 var command = inputString[2];
 
 
+//////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////  sort input[2]  /////////////////////////////////////////////////
 //previous if-then to call corresponding function
 // if (command === "my-tweets") {
 // 	twitterAPI();
 // }
-// 	else if (command === "spotify-this-song") {
-// 		spotifyAPI();
-// 	}
-// 	else if (command === "movie-this") {
-// 		omdbapi();
-// 	}
-// 	else if (command === "do-what-it-says") {
-// 		executeFile();
-// 	}
+// else if (command === "spotify-this-song") {
+// 	spotifyAPI();
+// }
+// else if (command === "movie-this") {
+// 	omdbapi();
+// }
+// else if (command === "do-what-it-says") {
+// 	executeFile();
+// }
 
 
 //direct corresponding function
@@ -47,6 +48,8 @@ switch (command) {
 		break;
 }
 
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////  function call  //////////////////////////////////////////////////
 //twitter
 //https://developer.twitter.com/en/docs/tweets/timelines/api-reference/get-statuses-user_timeline
@@ -58,8 +61,9 @@ function twitterAPI {
 		access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
 		access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
 	});
-	//only retrieving "text" from the tweets? output parameters
-	client.get("https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=kodewall&count=20", function(error, response, text) {
+	//output should give 20 last tweets & the date stamp
+	client.get("https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=kodewall&count=20", 
+		function(error, response, text) {
 		if (!error && response.statusCode === 200) {
 			console.log("The requested tweets are: " + JSON.parse(text));
 	//prettify results...
@@ -68,25 +72,32 @@ function twitterAPI {
 
 //spotify
 function spotifyAPI {
-  if (defaultSong !=== "null") {
-
-  }
-  	else if (var song = inputString[3]) {
-
+	//access hidden api keys
+	var spotify = new Spotify({
+		id: process.env.SPOTIFY_ID,
+		secret: process.env.SPOTIFY_SECRET
+	});
+  if (song === !) {
+  	var song = "The Sign" 
+  	var artist = "Ace of Base"
+  	  }
+  	else if () {
+  		var song = inputString[3]
   	}
-  //.search
-  //search: function({ type: 'artist OR album OR track', query: 'My search query', limit: 20 }, callback);
-  //Example:
-	  // var spotify = new Spotify({
-	  // id: <your spotify client id>,
-	  // secret: <your spotify client secret>
-	// });
-	//spotify.search({ type: 'track', query: 'All the Small Things' }, function(err, data) {
-  		//if (err) {
-    		//return console.log('Error occurred: ' + err);
-  		//}
- 	//console.log(data); 
-	//});
+  .search
+  q=name:abacab&type=album
+  search: function({ type: 'artist OR album OR track', query: 'My search query', limit: 20 }, callback);
+  Example:
+	  var spotify = new Spotify({
+	  id: <your spotify client id>,
+	  secret: <your spotify client secret>
+	});
+	spotify.search({ type: 'track', query: 'All the Small Things' }, function(err, data) {
+  		if (err) {
+    		return console.log('Error occurred: ' + err);
+  		}
+ 	console.log(data); 
+	});
 }
 
 //OMDB
@@ -95,7 +106,7 @@ function omdbAPI {
   var movie = inputString[3];
   request("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy", function(error, response, body) {
   	if (!error && response.statusCode === 200) {
-    console.log("The movie's rating is: " + JSON.parse(body).imdbRating);
+    console.log("Your movie results are: " + JSON.parse(body).imdbRating);
 
 }
 
@@ -130,7 +141,8 @@ function executeFile {
 		//text file array and capture song
 		console.log(data);
 		var fileSong = data.split(",");
-		var defaultSong = inputString[1];
+		var song = inputString[1];
+		console.log(inputString[1])
 		spotifyAPI();
 	}
 }
