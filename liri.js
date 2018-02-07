@@ -38,9 +38,11 @@ switch (command) {
 		twitterAPI();
 		break;
 	case "spotify-this-song":
+		var song = inputString[3]
 		spotifyAPI();
 		break;
 	case "movie-this":
+		var movie = inputString[3];
 		omdbAPI();
 		break;
 	case "do-what-it-says":
@@ -75,21 +77,16 @@ function twitterAPI {
 //spotify
 function spotifyAPI {
 	//default spotify search
-	if (!inputString[3]) {
-		var query = "The Sign Ace of Base"
-	}
-	//keyword search input[3]
-	else if {
-		var query = inputString[3]
-	}
-
+	if (!song) {
+		song = "The Sign"
+	};
 	//access hidden api keys
 	var spotify = new Spotify({
 		id: process.env.SPOTIFY_ID,
 		secret: process.env.SPOTIFY_SECRET
 	});
 	//results
-	spotify.request("https://api.spotify.com/v1/search/" + query, function(err, data) {
+	spotify.request("https://api.spotify.com/v1/search/" + song, function(err, data) {
 		if (err) {
 		    return console.log('Error occurred: ' + err);
 		}
@@ -100,7 +97,6 @@ function spotifyAPI {
 
 //OMDB
 function omdbAPI {
-  var movie = inputString[3];
   request("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy", function(error, response, body) {
   	if (!error && response.statusCode === 200) {
     console.log("Your movie results are: " + JSON.parse(body).imdbRating);
@@ -135,8 +131,8 @@ function executeFile {
 		  }
 		//text file array and capture song
 		console.log(data);
-		var fileSong = data.split(",");
-		var query = inputString[1];
+		var fileText = data.split(",");
+		var song = inputString[1];
 		console.log(inputString[1])
 		spotifyAPI();
 	}
