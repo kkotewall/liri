@@ -10,13 +10,15 @@ var fs = require("fs");
 
 //capture command line arguments
 var inputString = process.argv;
+var song = "";
+var movie = "";
 
 //first string will be command type
 var command = inputString[2];
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////  sort input[2]  /////////////////////////////////////////////////
+///////////////////////  sort command  /////////////////////////////////////////////////
 //previous if-then to call corresponding function
 // if (command === "my-tweets") {
 // 	twitterAPI();
@@ -52,7 +54,7 @@ switch (command) {
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////  function call  //////////////////////////////////////////////////
+///////////////////////////////////  api function calls  /////////////////////////////////////////////
 //twitter
 //https://developer.twitter.com/en/docs/tweets/timelines/api-reference/get-statuses-user_timeline
 function twitterAPI {
@@ -67,6 +69,7 @@ function twitterAPI {
 	client.get("https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=kodewall&count=20", 
 		function(error, response, text) {
 		if (!error && response.statusCode === 200) {
+			//return tweet text & when they were created
 			console.log("The requested tweets are: " + JSON.parse(text));
 	//prettify results...
 		}
@@ -77,7 +80,7 @@ function twitterAPI {
 //spotify
 function spotifyAPI {
 	//default spotify search
-	if (!song) {
+	if (song = "") {
 		song = "The Sign"
 	};
 	//access hidden api keys
@@ -86,41 +89,36 @@ function spotifyAPI {
 		secret: process.env.SPOTIFY_SECRET
 	});
 	//results
-	spotify.request("https://api.spotify.com/v1/search/" + song, function(err, data) {
-		if (err) {
-		    return console.log('Error occurred: ' + err);
-		}
+	spotify.search({ type: 'track', query: name, limit: '10'}, function(err, data) {
+	  if (err) {
+	    return console.log('Error occurred: ' + err);
+	  }
+	}
+	//return artist(s), song's name, preview link, album
 	console.log(data); 
+	//prettify results...
 	});
 }
 
 
 //OMDB
 function omdbAPI {
-  request("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy", function(error, response, body) {
+	request("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy", function(error, response, body) {
   	if (!error && response.statusCode === 200) {
-    console.log("Your movie results are: " + JSON.parse(body).imdbRating);
+  		//return title, year, IMDB rating, rotten tomatoes rating, country of production, language, plot, actors
+	    var movieRequest = JSON.parse(body);
+		//prettify results...
+	}}
+	console.log("Title: "+movieRequest.Title);
+	console.log("Released: "+movieRequest.Year);
+    console.log("IMDB Rating: "+movieRequest.imdbRating);
+    console.log("Rotten Tomatoes Rating: "+movieRequest.rottentomatoesRating);
+    console.log(movieResponse.Country);
+    console.log(movieResponse.Language);
+    console.log(movieResponse.Plot);
+    console.log(movieResponse.Actors);
+};
 
-}
-
-//require example:
-	// request('http://www.google.com', function (error, response, body) {
-	  // console.log('error:', error); // Print the error if one occurred
-	  // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-	  // console.log('body:', body); // Print the HTML for the Google homepage.
-	// });
-
-//OMDB search parameter:
-	//s: search movie title
-//OMDB result parameters:
-	// t: title of movie
-	//y: year of release
-	//.imdbRating: IMDB Rating of the movie.
-	//Rotten Tomatoes Rating of the movie.
-	//Country where the movie was produced.
-	//Language of the movie.
-	//plot: Plot of the movie.
-	//Actors in the movie.
 
 
 //read text file
