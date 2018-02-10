@@ -10,32 +10,37 @@ var fs = require("fs");
 
 //capture command line arguments
 var inputString = process.argv;
+
+//Spotify & OMDB variables
 var song = "";
 var movie = "";
-
-//first string will be command type
-var command = inputString[2];
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////  sort command  /////////////////////////////////////////////////
 //previous if-then to call corresponding function
-// if (command === "my-tweets") {
+// if (inputString[2] === "my-tweets") {
 // 	twitterAPI();
 // }
-// else if (command === "spotify-this-song") {
+// else if (inputString[2] === "spotify-this-song") {
 // 	spotifyAPI();
 // }
-// else if (command === "movie-this") {
+// else if (inputString[2] === "movie-this") {
 // 	omdbapi();
 // }
-// else if (command === "do-what-it-says") {
+// else if (inputString[2] === "do-what-it-says") {
 // 	executeFile();
 // }
 
+// else {
+//   console.log("Not a recognized command");
+// }
 
-//direct corresponding function
-switch (command) {
+
+
+
+// direct corresponding function
+switch (inputString[2]) {
 	case "my-tweets":
 		twitterAPI();
 		break;
@@ -57,7 +62,7 @@ switch (command) {
 ///////////////////////////////////  api function calls  /////////////////////////////////////////////
 //twitter
 //https://developer.twitter.com/en/docs/tweets/timelines/api-reference/get-statuses-user_timeline
-function twitterAPI {
+function twitterAPI() {
 	//access hidden api keys
 	var client = new Twitter({
 		consumer_key: process.env.TWITTER_CONSUMER_KEY,
@@ -78,7 +83,7 @@ function twitterAPI {
 
 
 //spotify
-function spotifyAPI {
+function spotifyAPI() {
 	//default spotify search
 	if (song = "") {
 		song = "The Sign"
@@ -93,8 +98,7 @@ function spotifyAPI {
 	  if (err) {
 	    return console.log('Error occurred: ' + err);
 	  }
-	}
-	//return artist(s), song's name, preview link, album
+		//return artist(s), song's name, preview link, album
 	console.log(data); 
 	//prettify results...
 	});
@@ -102,13 +106,13 @@ function spotifyAPI {
 
 
 //OMDB
-function omdbAPI {
+function omdbAPI() {
 	request("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy", function(error, response, body) {
   	if (!error && response.statusCode === 200) {
   		//return title, year, IMDB rating, rotten tomatoes rating, country of production, language, plot, actors
 	    var movieRequest = JSON.parse(body);
 		//prettify results...
-	}}
+	}
 	console.log("Title: "+movieRequest.Title);
 	console.log("Released: "+movieRequest.Year);
     console.log("IMDB Rating: "+movieRequest.imdbRating);
@@ -117,23 +121,23 @@ function omdbAPI {
     console.log(movieResponse.Language);
     console.log(movieResponse.Plot);
     console.log(movieResponse.Actors);
-};
-
+	});
+}
 
 
 //read text file
-function executeFile {
+function executeFile() {
   	fs.readFile("random.txt", "utf8", function(error, data) {
 		if (error) {
 		    return console.log(error);
-		  }
+		}
 		//text file array and capture song
 		console.log(data);
 		var fileText = data.split(",");
 		var song = inputString[1];
 		console.log(inputString[1])
 		spotifyAPI();
-	}
+	});
 }
 
 
