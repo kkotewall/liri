@@ -124,13 +124,13 @@ function omdbAPI() {
 		//prettify results...
 	}
 	console.log("Title: " + movieRequest.Title);
-	console.log("Released: "+ movieRequest.Year);
+	console.log("Released in: "+ movieRequest.Year);
     console.log("IMDB Rating: "+ movieRequest.imdbRating);
     console.log("Rotten Tomatoes Rating: "+ movieRequest.rottentomatoesRating);
-    console.log(movieRequest.Country);
-    console.log(movieRequest.Language);
-    console.log(movieRequest.Plot);
-    console.log(movieRequest.Actors);
+    console.log("Filmed in " + movieRequest.Country);
+    console.log("Language: " + movieRequest.Language);
+    console.log("Plot summary: " + movieRequest.Plot);
+    console.log("Actors: " + movieRequest.Actors);
 	});
 }
 
