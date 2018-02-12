@@ -92,7 +92,7 @@ function spotifyAPI() {
 	//input[3] as song
 	var song = "";
 		for (i = 3; i < inputString.length; i++) {
-			song = song + " " + inputString[i];
+			song = song + inputString[i];
 		}
 	
 	//default spotify search
@@ -100,13 +100,12 @@ function spotifyAPI() {
 		song = "The Sign"
 	};
 	//results
-	spotify.search({ type: 'track', query: song, limit: '10'}, function(err, data) {
+	spotify.search({ type: 'track', query: song, limit: '5'}, function(err, data) {
 	  if (err) {
 	    return console.log('Error occurred: ' + err);
 	  }
-		//return artist(s), song's name, preview link, album
-	console.log(data); 
-	//prettify results...
+	var data = data.tracks.items;
+    console.log("Artist: " + data[0].artists[0].name + "\nSong Title: " + data[0].name + "\nPreview: " + data[0].preview_url + "\nAlbum: " + data[0].album.name);
 	});
 }
 
