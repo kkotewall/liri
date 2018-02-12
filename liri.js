@@ -53,7 +53,6 @@ switch (inputString[2]) {
 		spotifyAPI();
 		break;
 	case "movie-this":
-		var movie = inputString[3];
 		omdbAPI();
 		break;
 	case "do-what-it-says":
@@ -112,20 +111,26 @@ function spotifyAPI() {
 
 //OMDB
 function omdbAPI() {
+	//input[3] as movie
+		var movie = "";
+			for (i = 3; i < inputString.length; i++) {
+				movie = movie + inputString[i];
+			}
+
 	request("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy", function(error, response, body) {
   	if (!error && response.statusCode === 200) {
   		//return title, year, IMDB rating, rotten tomatoes rating, country of production, language, plot, actors
 	    var movieRequest = JSON.parse(body);
 		//prettify results...
 	}
-	console.log("Title: "+movieRequest.Title);
-	console.log("Released: "+movieRequest.Year);
-    console.log("IMDB Rating: "+movieRequest.imdbRating);
-    console.log("Rotten Tomatoes Rating: "+movieRequest.rottentomatoesRating);
-    console.log(movieResponse.Country);
-    console.log(movieResponse.Language);
-    console.log(movieResponse.Plot);
-    console.log(movieResponse.Actors);
+	console.log("Title: " + movieRequest.Title);
+	console.log("Released: "+ movieRequest.Year);
+    console.log("IMDB Rating: "+ movieRequest.imdbRating);
+    console.log("Rotten Tomatoes Rating: "+ movieRequest.rottentomatoesRating);
+    console.log(movieRequest.Country);
+    console.log(movieRequest.Language);
+    console.log(movieRequest.Plot);
+    console.log(movieRequest.Actors);
 	});
 }
 
