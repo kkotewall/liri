@@ -50,7 +50,6 @@ switch (inputString[2]) {
 		twitterAPI();
 		break;
 	case "spotify-this-song":
-		var song = inputString[3]
 		spotifyAPI();
 		break;
 	case "movie-this":
@@ -81,18 +80,27 @@ function twitterAPI() {
 					"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 			}
 		}
+		else {
+			return console.log('Error occurred: ' + err);
+		}
 	});
 }
 
 
 //spotify
 function spotifyAPI() {
+	//input[3] as song
+	var song = "";
+		for (i = 3; i < inputString.length; i++) {
+			song = song + " " + inputString[i];
+		}
+	
 	//default spotify search
-	if (song = "") {
+	if (song === "") {
 		song = "The Sign"
 	};
 	//results
-	spotify.search({ type: 'track', query: name, limit: '10'}, function(err, data) {
+	spotify.search({ type: 'track', query: song, limit: '10'}, function(err, data) {
 	  if (err) {
 	    return console.log('Error occurred: ' + err);
 	  }
