@@ -2,10 +2,15 @@
 require("dotenv").config();
 
 //require node package variables
-var twitter = require('twitter');
-var Spotify = require('node-spotify-api');
 var request = require('request');
+var Twitter = require('twitter');
+var Spotify = require('node-spotify-api');
+var keys = require('./keys.js');
 var fs = require("fs");
+
+//key access
+var spotify = new Spotify(keys.spotify);
+var client = new Twitter(keys.twitter);
 
 
 //capture command line arguments
@@ -63,20 +68,18 @@ switch (inputString[2]) {
 //twitter
 //https://developer.twitter.com/en/docs/tweets/timelines/api-reference/get-statuses-user_timeline
 function twitterAPI() {
-	//access hidden api keys
-	var client = new Twitter({
-		consumer_key: process.env.TWITTER_CONSUMER_KEY,
-		consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-		access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
-		access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
-	});
 	//output should give 20 last tweets & the date stamp
-	client.get("https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=kodewall&count=20", 
-		function(error, response, text) {
-		if (!error && response.statusCode === 200) {
+	var params = {
+		screen_name: 'kodewall', count: 20
+	};
+	client.get('statuses/user_timeline', params, function(error, tweets, response) {
+		if (!error) {
+			console.log("The requested tweets are:");
 			//return tweet text & when they were created
-			console.log("The requested tweets are: " + JSON.parse(text));
-	//prettify results...
+			for (var i = 0; i < tweets.length; i++) {
+				console.log("Tweet no. " + (i+1) + "\r\n" + "Tweet: " + tweets[i].text + "\r\n" + "Created: " + tweets[i].created_at + "\r\n" +
+					"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			}
 		}
 	});
 }
@@ -88,11 +91,6 @@ function spotifyAPI() {
 	if (song = "") {
 		song = "The Sign"
 	};
-	//access hidden api keys
-	var spotify = new Spotify({
-		id: process.env.SPOTIFY_ID,
-		secret: process.env.SPOTIFY_SECRET
-	});
 	//results
 	spotify.search({ type: 'track', query: name, limit: '10'}, function(err, data) {
 	  if (err) {
