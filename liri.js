@@ -116,6 +116,10 @@ function omdbAPI() {
 			for (i = 3; i < inputString.length; i++) {
 				movie = movie + inputString[i];
 			}
+		//default omdb search
+		if (movie === "") {
+			movie = "Mr. Nobody"
+		};
 
 	request("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy", function(error, response, body) {
   	if (!error && response.statusCode === 200) {
