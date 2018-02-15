@@ -16,33 +16,14 @@ var client = new Twitter(keys.twitter);
 //capture command line arguments
 var inputString = process.argv;
 
-//Spotify & OMDB variables
+//api variables
 var song = "";
 var movie = "";
+var executeVar = "";
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////  sort command  /////////////////////////////////////////////////
-//previous if-then to call corresponding function
-// if (inputString[2] === "my-tweets") {
-// 	twitterAPI();
-// }
-// else if (inputString[2] === "spotify-this-song") {
-// 	spotifyAPI();
-// }
-// else if (inputString[2] === "movie-this") {
-// 	omdbapi();
-// }
-// else if (inputString[2] === "do-what-it-says") {
-// 	executeFile();
-// }
-
-// else {
-//   console.log("Not a recognized command");
-// }
-
-
-
 
 // direct corresponding function
 switch (inputString[2]) {
@@ -63,6 +44,20 @@ switch (inputString[2]) {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////  api function calls  /////////////////////////////////////////////
+//read text file
+function executeFile() {
+  	fs.readFile("random.txt", "utf8", function(error, data) {
+		if (error) {
+		    return console.log(error);
+		}
+		//text file array and capture song
+		var executeVar = data.split(",");
+		console.log(executeVar);
+		spotifyAPI(executeVar[1]);
+	});
+}
+
+
 //twitter
 //https://developer.twitter.com/en/docs/tweets/timelines/api-reference/get-statuses-user_timeline
 function twitterAPI() {
@@ -88,16 +83,22 @@ function twitterAPI() {
 
 //spotify
 function spotifyAPI() {
-	//input[3] as song
 	var song = "";
+	//executeFile call
+	if (executeVar != null) {
+		song = executeVar;
+	}
+	//input[3] as song
+	else {
 		for (i = 3; i < inputString.length; i++) {
 			song = song + inputString[i];
-		}
+		}}
 	
 	//default spotify search
 	if (song === "") {
 		song = "The Sign"
 	};
+	console.log(song);
 	//results
 	spotify.search({ type: 'track', query: song, limit: '5'}, function(err, data) {
 	  if (err) {
@@ -137,23 +138,6 @@ function omdbAPI() {
     console.log("Actors: " + movieRequest.Actors);
 	});
 }
-
-
-//read text file
-function executeFile() {
-  	fs.readFile("random.txt", "utf8", function(error, data) {
-		if (error) {
-		    return console.log(error);
-		}
-		//text file array and capture song
-		console.log(data);
-		var fileText = data.split(",");
-		var song = inputString[1];
-		console.log(inputString[1])
-		spotifyAPI();
-	});
-}
-
 
 
 
